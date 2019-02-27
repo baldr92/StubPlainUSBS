@@ -29,22 +29,27 @@ public class HandlerMsg {
 //    }
 
     public String getUID(String msg){
-        Pattern patternUID = Pattern.compile("CustomerID=\"(.+?)\" EndDate");
+        Pattern patternUID = Pattern.compile("CustomerID=\"(.+?)\" EndDate", Pattern.CASE_INSENSITIVE|Pattern.MULTILINE);
         //System.out.println(msg);
         Matcher matcher = patternUID.matcher(msg);
-        System.out.println(matcher.group(1));
-        //System.out.println(matcher.group(1));
-        String newXml = "<env:Body>\n" +
-                "<HermesMessage xmlns:ns5=\"http://www.vtb24.ru/Hermes/DeletePersonCrossRef/v1.0\" xmlns=\"http://www.vtb24.ru/Hermes/DeletePersonCrossRef/v1.0\">\n" +
-                "<ns5:Response ResultCode=\"0\">\n" +
-                "<ns5:Refs>\n" +
-                "<ns5:Ref CustomerID=\""+ "2" +"\" EndDate=\"19.02.2019 13:31:45\"/>\n" +
-                "</ns5:Refs>\n" +
-                "</ns5:Response>\n" +
-                "</HermesMessage>\n" +
-                "</env:Body>\n" +
-                "</env:Envelope>";
-        return newXml;
+        if(matcher.find()){
+            String uid = matcher.group(1);
+            String newXml = "<env:Body>\n" +
+                    "<HermesMessage xmlns:ns5=\"http://www.vtb24.ru/Hermes/DeletePersonCrossRef/v1.0\" xmlns=\"http://www.vtb24.ru/Hermes/DeletePersonCrossRef/v1.0\">\n" +
+                    "<ns5:Response ResultCode=\"0\">\n" +
+                    "<ns5:Refs>\n" +
+                    "<ns5:Ref CustomerID=\""+ uid +"\" EndDate=\"19.02.2019 13:31:45\"/>\n" +
+                    "</ns5:Refs>\n" +
+                    "</ns5:Response>\n" +
+                    "</HermesMessage>\n" +
+                    "</env:Body>\n" +
+                    "</env:Envelope>";
+            return newXml;
+        } else {
+            System.out.println("govno");
+            return "huita";
+        }
+
     }
 
 //    public String setRsMsg(String message){
